@@ -9,6 +9,11 @@ export default defineConfig({
                 'resources/js/app.js',
             ],
             refresh: true,
+            watch: [
+                'resources/views/**/*.blade.php',
+                'resources/js/**/*.js',
+                'resources/css/**/*.css',
+            ]
         }),
     ],
 });

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Software para Personas con Diagnóstico de Autismo</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TEApp</title>
+    @vite('resources/css/app.css')
 </head>
 
-<body class="font-sans bg-gray-100">
-    <header class="bg-blue-600 text-white py-4">
+<body class="font-sans antialiased dark:bg-black dark:text-white/50">
+    <header class="bg-blue-400 text-white p-4 border rounded-lg shadow-xl m-3">
         <div class="container mx-auto px-4">
             <h1 class="text-3xl font-bold">Software para Personas con Diagnóstico de Autismo</h1>
             @if (Route::has('login'))
@@ -21,13 +21,13 @@
                         </a>
                     @else
                         <a href="{{ route('login') }}"
-                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#477c92] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                             Ingresar
                         </a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}"
-                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#477c92] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                                 Registrarse
                             </a>
                         @endif
