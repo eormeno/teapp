@@ -9,7 +9,7 @@
 </head>
 
 <body class="font-sans antialiased dark:bg-black dark:text-white/50">
-    <header class="bg-blue-400 text-white p-4 border rounded-lg shadow-xl m-3">
+    <header class="bg-green-500 text-white p-4 border rounded-lg shadow-xl m-3">
         <div class="container mx-auto px-4">
             <h1 class="text-3xl font-bold">Software para Personas con Diagnóstico de Autismo</h1>
             @if (Route::has('login'))
