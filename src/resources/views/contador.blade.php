@@ -1,6 +1,6 @@
-<x-app-layout>
+<x-event-layout>
 
-    <x-slot name="header">Contador</x-slot>
+    <x-slot name="title">Contador</x-slot>
 
     <div class="font-sans antialiased dark:bg-black dark:text-white/50">
         <div class="container mx-auto px-4 py-8">
@@ -21,4 +21,4 @@
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-event-layout>

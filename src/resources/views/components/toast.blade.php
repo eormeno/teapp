@@ -13,7 +13,6 @@
         if (!toast_element) {
             return;
         }
-        //var toast_render = toast_element.querySelector('.toast-render');
         var toast_render = document.getElementById('toast-' + toast_name + '-event-render');
         if (toast_render) {
             toast_render.innerHTML = toast_message;
