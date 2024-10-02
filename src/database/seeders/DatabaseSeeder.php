@@ -11,5 +11,6 @@ class DatabaseSeeder extends Seeder
         fake()->seed(10);
         $this->call(PermissionsSeeder::class);
         $this->call(UsersSeeder::class);
+        $this->call(PatientSeeder::class);
     }
 }
