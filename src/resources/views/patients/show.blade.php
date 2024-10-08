@@ -1,4 +1,4 @@
-<x-event-layout>
+<x-crud-layout>
     <x-slot name="title">Detalle del paciente</x-slot>
     <p>Código: {{ $patient->codigo }}</p>
     <p>Apellidos: {{ $patient->apellidos }}</p>
@@ -11,4 +11,4 @@
     <p>Dirección: {{ $patient->direccion }}</p>
     <p>Observaciones: {{ $patient->observaciones }}</p>
     <a href="{{ route('patients.index') }}">Volver</a>
-</x-event-layout>
+</x-crud-layout>

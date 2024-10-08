@@ -1,4 +1,4 @@
-<x-event-layout>
+<x-crud-layout>
 	<x-slot name="title">Editar paciente</x-slot>
     <form action="{{ route('patients.update', $patient) }}" method="POST">
         @csrf
@@ -28,4 +28,4 @@
         <textarea name="observaciones">{{ $patient->observaciones }}</textarea>
         <button type="submit">Guardar</button>
     </form>
-</x-event-layout>
+</x-crud-layout>
