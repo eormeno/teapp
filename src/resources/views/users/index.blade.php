@@ -13,7 +13,7 @@
                             class="inline-flex items-center px-4 py-2 mb-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
                             New User
                         </a>
-                        <div class="overflow-x-auto">
+                        <div class="overflow-x-hidden">
                             <table class="min-w-full divide-y divide-gray-200">
                                 <thead class="bg-gray-50">
                                     <tr>
@@ -21,7 +21,7 @@
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                             Name</th>
                                         <th scope="col"
-                                            class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                            class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider hidden sm:table-cell">
                                             Email</th>
                                         <th scope="col"
                                             class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
@@ -36,7 +36,7 @@
                                         <tr class="{{ $key % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
                                             <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                                                 {{ $user->name }}</td>
-                                            <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
+                                            <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500 hidden md:table-cell">
                                                 {{ $user->email }}</td>
                                             <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                                 @if (!empty($user->getRoleNames()))
