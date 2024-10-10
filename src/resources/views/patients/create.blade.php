@@ -13,12 +13,13 @@
 
     <x-validation-errors class="mb-4" />
 
-    <form action="{{ route('patients.store') }}" method="POST" class="mt-2">
+    <form action="{{ route('patients.store') }}" method="POST" class="mt-2" novalidate>
         @csrf
         <div class="mt-2">
             <x-label for="codigo" value="Código" />
             <x-input id="codigo" class="block mt-1 w-full" type="text" name="codigo" :value="old('codigo')" required
                 autofocus autocomplete="codigo" />
+            <x-input-error for="codigo" class="mt-2" />
         </div>
         <div class="mt-2">
             <x-label for="apellidos" value="Apellidos" />

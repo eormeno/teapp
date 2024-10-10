@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use Illuminate\Http\Request;
+use App\Http\Requests\PatientRequest;
 
 class PatientController extends Controller
 {
@@ -27,20 +28,9 @@ class PatientController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PatientRequest $request)
     {
-        $request->validate([
-            'codigo' => 'required|unique:patients',
-            'apellidos' => 'required',
-            'nombres' => 'required',
-            'dni' => 'required|unique:patients',
-            'nacimiento' => 'required|date',
-            'sexo' => 'required',
-            'telefono' => 'required',
-            'email' => 'required|email|unique:patients',
-            'direccion' => 'required',
-        ]);
-        Patient::create($request->all());
+        Patient::create($request->validated());
         return redirect()->route('patients.index');
     }
 
