@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Patient;
+use App\Models\Activity;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class PatientSeeder extends Seeder
+class ActivitySeeder extends Seeder
 {
     use WithoutModelEvents;
 
@@ -15,6 +15,6 @@ class PatientSeeder extends Seeder
      */
     public function run(): void
     {
-        Patient::factory()->count(10)->create();
+        Activity::factory()->count(3)->create();
     }
 }

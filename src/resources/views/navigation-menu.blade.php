@@ -32,6 +32,11 @@
                         {{ __('Pacientes') }}
                     </x-nav-link>
                 </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('activities.index') }}" :active="request()->routeIs('activities.index')">
+                        {{ __('Actividades') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -178,6 +183,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link href="{{ route('patients.index') }}" :active="request()->routeIs('patients.index')">
                 {{ __('Pacientes') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link href="{{ route('activities.index') }}" :active="request()->routeIs('activities.index')">
+                {{ __('Actividades') }}
             </x-responsive-nav-link>
         </div>
 
