@@ -3,25 +3,26 @@
 namespace Database\Factories;
 
 use Illuminate\Support\Facades\Http;
+use Intervention\Image\Laravel\Facades\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ActivityFactory extends Factory
 {
+    private function downloadImage(int $width, int $height) : ?string
+    {
+        $response = Http::get("https://picsum.photos/{$width}/{$height}");
+        if ($response->successful()) {
+            return base64_encode($response->body());
+        }
+        return null;
+    }
+
     public function definition()
     {
-        $width = 255;
-        $height = 255;
-        $imageUrl = "https://picsum.photos/{$width}/{$height}";
-
-        // Descargar la imagen
-        $response = Http::get($imageUrl);
-
-        if ($response->successful()) {
-            // Convertir la imagen a base64
-            $base64Image = base64_encode($response->body());
-        } else {
-            // Si falla la descarga, usar un placeholder base64
-            $base64Image = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN8/x8AAuMB8DtXNJsAAAAASUVORK5CYII=";
+        $base64Image = $this->downloadImage(255, 255);
+        if ($base64Image === null) {
+            $image = Image::canvas(255, 255, '#ccc');
+            $base64Image = $image->encode('data-url');
         }
 
         return [
