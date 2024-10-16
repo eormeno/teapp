@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
+use App\Traits\DebugHelper;
+use Intervention\Image\Laravel\Facades\Image;
 
 class ActivityController extends Controller
 {
+    use DebugHelper;
+
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +34,12 @@ class ActivityController extends Controller
      */
     public function store(StoreActivityRequest $request)
     {
-        Activity::create($request->validated());
+        $file = $request->file('image');
+        $contents = file_get_contents($file);
+        $base64Image = base64_encode($contents);
+        $validated = $request->validated();
+        $validated['image'] = $base64Image;
+        Activity::create($validated);
         return redirect()->route('activities.index');
     }
 
