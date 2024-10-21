@@ -16,7 +16,9 @@ class EventController extends Controller
         $reloaded = $request->input('reloaded', false);
         $session_storage = $reloaded ? 'delayed_events' : 'events';
 
-        $this->trigger('server_time_changed', now()->toDateTimeString());
+        //$this->trigger('server_time_changed', now()->toDateTimeString());
+        //$this->trigger('log', json_encode($errors));
+
         $events = session($session_storage, []);
         session()->forget($session_storage);
         return response()->json($events);

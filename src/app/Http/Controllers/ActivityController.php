@@ -64,7 +64,14 @@ class ActivityController extends Controller
      */
     public function update(UpdateActivityRequest $request, Activity $activity)
     {
-        $activity->update($request->validated());
+        $file = $request->file('image');
+        $validated = $request->validated();
+        if ($file) {
+            $contents = file_get_contents($file);
+            $base64Image = base64_encode($contents);
+            $validated['image'] = $base64Image;
+        }
+        $activity->update($validated);
         return redirect()->route('activities.index');
     }
 

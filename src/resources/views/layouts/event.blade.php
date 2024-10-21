@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    <x-event-listener />
+    {{-- <x-event-listener /> --}}
 
     <div class="p-3 relative">
         <div
@@ -16,9 +16,7 @@
                 <div class="bg-slate-400 shadow-lg p-6 border border-red-400 rounded-md">
                     <x-toast-message />
                     <x-button class="bg-cyan-500 hover:bg-cyan-600 mt-4"
-                        onclick="document.getElementById('toast-alert').style.display = 'none'">
-                        Cerrar
-                    </x-button>
+                        onclick="document.getElementById('toast-alert').style.display = 'none'">Cerrar</x-button>
                 </div>
             </x-toast>
 
