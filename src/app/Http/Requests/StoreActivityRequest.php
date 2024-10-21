@@ -2,10 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\ToastTrigger;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class StoreActivityRequest extends FormRequest
 {
+    use ToastTrigger;
+
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -24,7 +28,7 @@ class StoreActivityRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'image' => ['required', 'image','mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            'image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];
     }
 
@@ -43,6 +47,20 @@ class StoreActivityRequest extends FormRequest
             'description.string' => 'La descripción debe ser una cadena de texto',
             'image.required' => 'La imagen es requerida',
             'image.image' => 'La imagen debe ser un archivo de imagen',
+            'image.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif, svg',
+            'image.max' => 'La imagen no debe exceder los 2048 kilobytes',
         ];
+    }
+
+    /**
+     * Personaliza el manejo de errores de validación para lanzar un toast de error.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator $validator
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $this->errorToast($validator->errors()->first());
+        parent::failedValidation($validator);
     }
 }

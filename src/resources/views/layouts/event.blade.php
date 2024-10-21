@@ -6,7 +6,7 @@
         </h2>
     </x-slot>
 
-    {{-- <x-event-listener /> --}}
+    <x-event-listener />
 
     <div class="p-3 relative">
         <div

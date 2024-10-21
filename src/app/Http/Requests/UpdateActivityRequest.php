@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
 class UpdateActivityRequest extends FormRequest
 {
@@ -24,7 +25,8 @@ class UpdateActivityRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['required', 'string'],
-            'image' => ['image','mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+            // Durante la actualización de una actividad, la imagen no es requerida.
+            'image' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
         ];
     }
 
@@ -38,6 +40,20 @@ class UpdateActivityRequest extends FormRequest
             'description.string' => 'La descripción debe ser una cadena de texto',
             'image.required' => 'La imagen es requerida',
             'image.image' => 'La imagen debe ser un archivo de imagen',
+            'image.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, gif, svg',
+            'image.max' => 'La imagen no debe exceder los 2048 kilobytes',
         ];
+    }
+
+    /**
+     * Personaliza el manejo de errores de validación para lanzar un toast de error.
+     *
+     * @param  \Illuminate\Contracts\Validation\Validator $validator
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function failedValidation(Validator $validator)
+    {
+        $this->errorToast($validator->errors()->first());
+        parent::failedValidation($validator);
     }
 }
