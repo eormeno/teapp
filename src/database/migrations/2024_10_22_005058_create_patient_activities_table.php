@@ -13,7 +13,17 @@ return new class extends Migration
     {
         Schema::create('patient_activities', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('patient_id')->constrained();
+            $table->foreignId('activity_id')->constrained();
+            $table->boolean('active')->default(false);
+            $table->date('date');
+            $table->integer('repetitions')->nullable();
+            $table->text('reasons')->nullable();
+            $table->text('goals')->nullable();
+            $table->text('indicators')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
