@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use App\Models\PatientActivity;
 use App\Http\Requests\StorePatientActivityRequest;
 use App\Http\Requests\UpdatePatientActivityRequest;
@@ -13,7 +14,13 @@ class PatientActivityController extends Controller
      */
     public function index()
     {
-        //
+        $patient_id = request()->get('patient_id');
+        $patients = Patient::all();
+        //$patientActivities = PatientActivity::all();
+        // given user_id and patient_id, get all patient activities
+        $patientActivities = PatientActivity::where('patient_id', $patient_id)->paginate(5);
+
+        return view('patient-activities.index', compact('patientActivities', 'patients', 'patient_id'));
     }
 
     /**

@@ -7,6 +7,7 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ContadorController;
+use App\Http\Controllers\PatientActivityController;
 
 Route::get('/', function () {
     return view('landing');
@@ -17,6 +18,8 @@ Route::get('/contador/incrementar/{número}', [ContadorController::class, 'incre
 Route::get('/contador/decrementar/{número}', [ContadorController::class, 'decrementar'])->name('decrementar');
 Route::resource('patients', PatientController::class)->middleware('auth');
 Route::resource('activities', ActivityController::class)->middleware('auth');
+Route::resource('patient-activities', PatientActivityController::class);
+
 
 Route::middleware('permission:see-panel')->group(function () {
     Route::get('/dashboard', function () {

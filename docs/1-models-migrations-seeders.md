@@ -200,3 +200,100 @@ Ejecuta las migraciones y los seeders para crear las tablas y los datos de prueb
 src> rm ./database/database.sqlite   # Elimina la bbdd (opcional)
 src> php artisan migrate --seed --force
 ```
+
+## Rutear la nueva funcionalidad
+Agrega las rutas para la nueva funcionalidad en el archivo routes/web.php.
+
+```php
+    // En routes/web.php
+    Route::resource('patient-activities', PatientActivityController::class);
+```
+
+## Modifica el menú de navegación
+Modifica el [menú de navegación](../src/resources/views/navigation-menu.blade.php) para incluir un enlace a la nueva funcionalidad.
+
+```html
+    <!-- En resources/views/navigation-menu.blade.php -->
+    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+        <x-nav-link href="{{ route('patient-activities.index') }}" :active="request()->routeIs('patient-activities.index')">
+        {{ __('Actividades de Pacientes') }}
+        </x-nav-link>
+    </div>
+    ...
+    <!-- y luego en el menú responsive -->
+     <x-responsive-nav-link href="{{ route('patient-activities.index') }}" :active="request()->routeIs('patient-activities.index')">
+        {{ __('Actividades de Pacientes') }}
+    </x-responsive-nav-link>
+```
+
+## Crea las vistas para la nueva funcionalidad
+Utilizando el comando `php artisan make:view` crea las vistas para la nueva funcionalidad.
+
+```bash
+src> php artisan make:view patient-activities.index
+src> php artisan make:view patient-activities.create
+src> php artisan make:view patient-activities.edit
+src> php artisan make:view patient-activities.show
+```
+
+## Modifica cada vista para la nueva funcionalidad
+Haremos que cada una de las vistas recientemente creadas herede de la plantilla <x-crud-layout> siguiendo el siguiente patrón:
+
+```html
+<x-crud-layout>
+    <x-slot name="title">...</x-slot>
+
+    <a href="{{ route('patient-activities.index') }}">
+        <div
+            class="inline-flex items-center px-4 py-2 mb-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+        </div>
+    </a>
+    <h1>...</h1>
+</x-crud-layout>
+```
+
+## Modifica el controlador para la nueva funcionalidad
+Modifica el [controlador](../src/app/Http/Controllers/PatientActivityController.php) para la nueva funcionalidad para que utilice el modelo y las vistas adecuadas.
+
+```php
+    // En el controlador
+    class PatientActivityController extends Controller
+    {
+        public function index(): View {
+            $patientActivities = PatientActivity::all();
+            return view('patient-activities.index', compact('patientActivities'));
+        }
+
+        public function create(): View {
+            return view('patient-activities.create');
+        }
+
+        public function store(StorePatientActivityRequest $request): RedirectResponse {
+            PatientActivity::create($request->validated());
+            return redirect()->route('patient-activities.index');
+        }
+
+        public function show(PatientActivity $patientActivity): View {
+            return view('patient-activities.show', compact('patientActivity'));
+        }
+
+        public function edit(PatientActivity $patientActivity): View {
+            return view('patient-activities.edit', compact('patientActivity'));
+        }
+
+        public function update(UpdatePatientActivityRequest $request, PatientActivity $patientActivity): RedirectResponse {
+            $patientActivity->update($request->validated());
+            return redirect()->route('patient-activities.index');
+        }
+
+        public function destroy(PatientActivity $patientActivity): RedirectResponse {
+            $patientActivity->delete();
+            return redirect()->route('patient-activities.index');
+        }
+    }
+```
+
