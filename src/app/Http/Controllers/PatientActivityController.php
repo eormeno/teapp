@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\Activity;
 use App\Models\PatientActivity;
 use App\Http\Requests\StorePatientActivityRequest;
 use App\Http\Requests\UpdatePatientActivityRequest;
@@ -21,7 +22,11 @@ class PatientActivityController extends Controller
      */
     public function create()
     {
-        //
+        $patient_id = request()->get('patient_id');
+        $patient = Patient::find($patient_id);
+        $patient_full_name = $patient->apellidos . ', ' . $patient->nombres;
+        $activities = Activity::all();
+        return view('patient-activities.create', compact('activities', 'patient_id', 'patient_full_name'));
     }
 
     /**

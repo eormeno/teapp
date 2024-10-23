@@ -1,7 +1,7 @@
 <x-crud-layout>
-    <x-slot name="title">Nueva actividad al paciente</x-slot>
+    <x-slot name="title">Nueva actividad al paciente {{ $patient_full_name }} </x-slot>
 
-    <a href="{{ route('patient-activities.index') }}">
+    <a href="{{ route('patient-activities.index', ['patient_id' => $patient_id]) }}">
         <div
             class="inline-flex items-center px-4 py-2 mb-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-900 focus:outline-none focus:border-indigo-900 focus:ring ring-indigo-300 disabled:opacity-25 transition ease-in-out duration-150">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -10,5 +10,39 @@
             </svg>
         </div>
     </a>
-    <h1>Agregar actividad al paciente</h1>
+    <form action="{{ route('activities.store') }}" method="POST" class="mt-2" novalidate
+        enctype="multipart/form-data">
+        @csrf
+        <!-- A selection of activities -->
+        <div class="mb-4">
+            <label for="activity_id" class="block text-ellipsis text-sm font-medium text-gray-700">Actividad</label>
+            <select id="activity_id" name="activity_id"
+                class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                required>
+                <option value="">Seleccionar actividad</option>
+                @foreach ($activities as $activity)
+                    <option value="{{ $activity->id }}">{{ $activity->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mt-2">
+            <x-label for="name" value="Nombre" />
+            <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
+                autofocus autocomplete="name" />
+        </div>
+        <div class="mt-2">
+            <x-label for="description" value="Descripción" />
+            <textarea name="description" id="description" cols="30" rows="3"
+                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm block mt-1 w-full"
+                required>{{ old('description') }}</textarea>
+        </div>
+        <div class="mb-3">
+            <x-label for="image" value="Imagen" />
+            <x-input id="image" class="block mt-1 w-full" type="file" name="image" :value="old('image')" required
+                autocomplete="image" />
+        </div>
+        <div class="flex items-center justify-end mt-4">
+            <x-button class="ms-4">Crear actividad</x-button>
+        </div>
+    </form>
 </x-crud-layout>
