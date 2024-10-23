@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Activity;
+use App\Traits\DebugHelper;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
-use App\Traits\DebugHelper;
 use Intervention\Image\Laravel\Facades\Image;
 
 class ActivityController extends Controller

@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests;
 
+use App\Traits\ToastTrigger;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 
 class UpdateActivityRequest extends FormRequest
 {
+    use ToastTrigger;
+
     /**
      * Determine if the user is authorized to make this request.
      */
