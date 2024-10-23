@@ -256,44 +256,73 @@ Haremos que cada una de las vistas recientemente creadas herede de la plantilla 
 </x-crud-layout>
 ```
 
-## Modifica el controlador para la nueva funcionalidad
-Modifica el [controlador](../src/app/Http/Controllers/PatientActivityController.php) para la nueva funcionalidad para que utilice el modelo y las vistas adecuadas.
+## Interacción entre la Vista y el Controlador
+La interacción entre la vista y el controlador para la funcionalidad de asignación de actividades a pacientes se puede describir de la siguiente manera:
 
-```php
-    // En el controlador
-    class PatientActivityController extends Controller
-    {
-        public function index(): View {
-            $patientActivities = PatientActivity::all();
-            return view('patient-activities.index', compact('patientActivities'));
-        }
+### 1. Vista Inicial (index.blade.php)
+- La vista `index.blade.php` muestra un formulario con un [`select`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A6%2C%22character%22%3A9%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") para elegir un paciente.
+- Cuando el usuario selecciona un paciente, se dispara el evento [`onchange`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A8%2C%22character%22%3A12%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition"), que redirige la página a la URL `/patient-activities?patient_id=<selected_patient_id>`.
+- Esta redirección incluye el [`patient_id`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A46%2C%22character%22%3A12%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A12%2C%22character%22%3A38%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A5%2C%22character%22%3A20%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") como un **query parameter**.
 
-        public function create(): View {
-            return view('patient-activities.create');
-        }
+### 2. Query Parameters
+- Los **query parameters** son partes de la URL que se utilizan para enviar datos al servidor. En este caso, [`patient_id`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A46%2C%22character%22%3A12%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A12%2C%22character%22%3A38%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A5%2C%22character%22%3A20%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") es un query parameter que se pasa a la URL para filtrar las actividades del paciente seleccionado.
+- Ejemplo de URL con query parameter: `/patient-activities?patient_id=1`.
 
-        public function store(StorePatientActivityRequest $request): RedirectResponse {
-            PatientActivity::create($request->validated());
-            return redirect()->route('patient-activities.index');
-        }
+### 3. Controlador (PatientActivityController)
 
-        public function show(PatientActivity $patientActivity): View {
-            return view('patient-activities.show', compact('patientActivity'));
-        }
+- El método [`index`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A217%2C%22character%22%3A55%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A11%2C%22character%22%3A20%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") del [`PatientActivityController`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A83%2C%22character%22%3A47%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A9%2C%22character%22%3A6%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") recibe la solicitud.
+- Utiliza `request()->get('patient_id')` para obtener el [`patient_id`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A46%2C%22character%22%3A12%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A12%2C%22character%22%3A38%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A5%2C%22character%22%3A20%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") del query parameter.
+- Luego, obtiene todos los pacientes (`$patients = Patient::all()`) y las actividades del paciente seleccionado (`$patientActivities = PatientActivity::where('patient_id', $patient_id)->paginate(5)`).
+- Finalmente, retorna la vista `patient-activities.index` con los datos de [`$patientActivities`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A14%2C%22character%22%3A8%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition"), [`$patients`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A13%2C%22character%22%3A8%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition"), y [`$patient_id`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A12%2C%22character%22%3A8%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition").
 
-        public function edit(PatientActivity $patientActivity): View {
-            return view('patient-activities.edit', compact('patientActivity'));
-        }
+### 4. Renderización de la Vista
+- La vista `index.blade.php` se renderiza nuevamente con los datos proporcionados por el controlador.
+- Si [`patient_id`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A46%2C%22character%22%3A12%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A12%2C%22character%22%3A38%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A5%2C%22character%22%3A20%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") no es nulo, se muestra un enlace para crear una nueva actividad y una tabla con las actividades del paciente seleccionado.
+- Si no hay actividades, se muestra un mensaje indicando que no hay actividades registradas.
 
-        public function update(UpdatePatientActivityRequest $request, PatientActivity $patientActivity): RedirectResponse {
-            $patientActivity->update($request->validated());
-            return redirect()->route('patient-activities.index');
-        }
+### Diagrama de Secuencia
 
-        public function destroy(PatientActivity $patientActivity): RedirectResponse {
-            $patientActivity->delete();
-            return redirect()->route('patient-activities.index');
-        }
-    }
+```mermaid
+sequenceDiagram
+    participant User
+    participant Browser
+    participant Controller
+    participant Model
+
+    User->>Browser: Select patient from dropdown
+    Browser->>Browser: Redirect to /patient-activities?patient_id=<selected_patient_id>
+    Browser->>Controller: GET /patient-activities?patient_id=<selected_patient_id>
+    Controller->>Model: Patient::all()
+    Model-->>Controller: List of patients
+    Controller->>Model: PatientActivity::where('patient_id', <selected_patient_id>)->paginate(5)
+    Model-->>Controller: List of patient activities
+    Controller->>Browser: Render view with patients, patientActivities, and patient_id
+    Browser-->>User: Display updated view with patient activities
 ```
 
+### Explicación del Diagrama de Secuencia
+
+1. **User Interaction**:
+    - El usuario selecciona un paciente del dropdown en la vista.
+
+2. **Browser Redirection**:
+    - El navegador redirige a la URL `/patient-activities?patient_id=<selected_patient_id>`.
+
+3. **Controller Handling**:
+    - El controlador recibe la solicitud GET con el query parameter [`patient_id`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A46%2C%22character%22%3A12%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A12%2C%22character%22%3A38%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A5%2C%22character%22%3A20%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition").
+    - El controlador obtiene la lista de todos los pacientes y las actividades del paciente seleccionado desde el modelo.
+
+4. **Model Interaction**:
+    - El modelo [`Patient`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A15%2C%22character%22%3A2%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A4%2C%22character%22%3A15%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") devuelve la lista de todos los pacientes.
+    - El modelo [`PatientActivity`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A17%2C%22character%22%3A2%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A5%2C%22character%22%3A15%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") devuelve la lista de actividades del paciente seleccionado.
+
+5. **View Rendering**:
+    - El controlador pasa los datos a la vista `index.blade.php`
+    - La vista se renderiza con los datos de pacientes y actividades del paciente seleccionado.
+
+6. **User Display**:
+    - El navegador muestra la vista actualizada con las actividades del paciente seleccionado.
+
+### Conclusión
+
+El parámetro [`patient_id`](command:_github.copilot.openSymbolFromReferences?%5B%22%22%2C%5B%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2FC%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fdocs%2F1-models-migrations-seeders.md%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A46%2C%22character%22%3A12%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fapp%2FHttp%2FControllers%2FPatientActivityController.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A12%2C%22character%22%3A38%7D%7D%2C%7B%22uri%22%3A%7B%22scheme%22%3A%22file%22%2C%22authority%22%3A%22%22%2C%22path%22%3A%22%2Fc%3A%2FUsers%2Femili%2FDesktop%2Fdemos%2Fteapp%2Fsrc%2Fresources%2Fviews%2Fpatient-activities%2Findex.blade.php%22%2C%22query%22%3A%22%22%2C%22fragment%22%3A%22%22%7D%2C%22pos%22%3A%7B%22line%22%3A5%2C%22character%22%3A20%7D%7D%5D%2C%22ebcf60c0-76e4-4f29-a58c-dd5e507507fa%22%5D "Go to definition") es crucial para filtrar las actividades del paciente seleccionado. Al pasarlo como query parameter, se permite al controlador identificar qué actividades mostrar en la vista. Los query parameters son una forma eficiente de enviar datos al servidor a través de la URL, permitiendo que la aplicación web sea dinámica y responda a las acciones del usuario.
