@@ -24,10 +24,8 @@ class ImageUtils
     {
         $manager = new ImageManager(new Driver());
         $image = $manager->read($source);
-        // resize the image to a width of 64 and constrain aspect ratio (auto height)
-        $thumbnail = $image->resize(48, 48);
-        //$thumbnail = $image->resize(width: 64, height: 64);
         $originalBase64 = base64_encode($image->toJpeg(90));
+        $thumbnail = $image->resize(48, 48);
         $thumbnailBase64 = base64_encode($thumbnail->toJpeg(90));
         return [
             'original' => $originalBase64,

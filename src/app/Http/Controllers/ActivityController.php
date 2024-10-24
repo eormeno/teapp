@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
 use App\Traits\DebugHelper;
+use App\Utils\ImageUtils;
 use Intervention\Image\Laravel\Facades\Image;
 
 class ActivityController extends Controller
@@ -42,9 +43,10 @@ class ActivityController extends Controller
     {
         $file = $request->file('image');
         $contents = file_get_contents($file);
-        $base64Image = base64_encode($contents);
+        $base64Images = ImageUtils  ::base64Images($contents);
         $validated = $request->validated();
-        $validated['image'] = $base64Image;
+        $validated['image'] = $base64Images['original'];
+        $validated['thumbnail'] = $base64Images['thumbnail'];
         Activity::create($validated);
         return redirect()->route('activities.index');
     }
@@ -74,8 +76,10 @@ class ActivityController extends Controller
         $validated = $request->validated();
         if ($file) {
             $contents = file_get_contents($file);
-            $base64Image = base64_encode($contents);
-            $validated['image'] = $base64Image;
+            $base64Images = ImageUtils  ::base64Images($contents);
+            $validated = $request->validated();
+            $validated['image'] = $base64Images['original'];
+            $validated['thumbnail'] = $base64Images['thumbnail'];
         }
         $activity->update($validated);
         return redirect()->route('activities.index');
