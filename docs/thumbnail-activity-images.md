@@ -1,5 +1,9 @@
 ### Descripción de la Funcionalidad de Miniaturas de Imágenes
 
+#### Objetivo
+El objetivo de esta funcionalidad es permitir a los usuarios cargar imágenes de actividades y mostrar miniaturas de esas imágenes en la interfaz de usuario. Esto mejora la experiencia del usuario al proporcionar una vista previa visual de las imágenes cargadas.
+
+![alt text](images/image.png)
 ### ¿Que es base64?
 Base64 es un método para codificar datos binarios en un formato de texto ASCII. Se utiliza comúnmente para representar imágenes en aplicaciones web, ya que permite incrustar imágenes directamente en el código HTML o CSS. La codificación base64 convierte los datos binarios en una cadena de caracteres que contiene caracteres alfanuméricos y algunos símbolos. Por ejemplo, la cadena base64 de una imagen PNG se vería así:
 
