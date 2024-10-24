@@ -14,6 +14,8 @@ class ImageUtils
             $response = Http::get("https://picsum.photos/{$width}/{$height}");
             return self::base64Images($response->body());
         } catch (\Exception $e) {
+            // Log error by console
+            echo $e->getMessage();
             return null;
         }
     }
