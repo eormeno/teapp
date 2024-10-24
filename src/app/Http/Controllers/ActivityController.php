@@ -17,7 +17,13 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        $activities = Activity::latest()->paginate(5);
+        $searchString = request()->get('search');
+
+        if ($searchString) {
+            $activities = Activity::where('name', 'like', "%$searchString%")->latest()->paginate(5);
+        } else {
+            $activities = Activity::latest()->paginate(5);
+        }
         return view('activities.index', compact('activities'));
     }
 

@@ -18,11 +18,11 @@ function Stop-ProcessByPort {
 
 # A function that reads the processes.txt file and stops the processes
 function Stop-Processes {
-    if (-not (Test-Path .\processes.txt)) {
+    if (-not (Test-Path .\src\processes.txt)) {
         Write-Host "No processes to stop."
         return
     }
-    $processes = Get-Content .\processes.txt
+    $processes = Get-Content .\src\processes.txt
     $processes | ForEach-Object {
         $process = Get-Process -Id $_
         if ($process) {
@@ -31,7 +31,7 @@ function Stop-Processes {
         }
         #Stop-Process -Id $_
     }
-    Remove-Item .\processes.txt
+    Remove-Item .\src\processes.txt
 }
 
 #Stop-ProcessByPort 5173 "Vite"

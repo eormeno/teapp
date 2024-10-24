@@ -17,6 +17,9 @@
                         Descripción</th>
                     <th scope="col"
                         class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                        Miniatura</th>
+                    <th scope="col"
+                        class="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                         Acciones</th>
                 </tr>
             </thead>
@@ -27,6 +30,10 @@
                             {{ $activity->name }}</td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
                             {{ Str::limit($activity->description, 30) }}</td>
+                        <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                            <img src="data:image/png;base64,{{ $activity->image }}" alt="{{ $activity->name }}"
+                                class="w-10 h-10 object-cover rounded-lg shadow-lg">
+                        </td>
                         <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                             <div class="flex items-center space-x-2">
                                 <a href="{{ route('activities.show', $activity) }}"
