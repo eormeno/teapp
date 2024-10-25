@@ -10,7 +10,7 @@
             </svg>
         </div>
     </a>
-    <form action="{{ route('activities.store') }}" method="POST" class="mt-2" novalidate
+    <form action="{{ route('patient-activities.store', ['patient_id' => $patient_id]) }}" method="POST" class="mt-2" novalidate
         enctype="multipart/form-data">
         @csrf
         <!-- A selection of activities -->
@@ -26,23 +26,31 @@
             </select>
         </div>
         <div class="mt-2">
-            <x-label for="name" value="Nombre" />
-            <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
-                autofocus autocomplete="name" />
-        </div>
-        <div class="mt-2">
             <x-label for="description" value="Descripción" />
-            <textarea name="description" id="description" cols="30" rows="3"
+            <textarea name="description" id="description" cols="30" rows="2"
                 class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm block mt-1 w-full"
                 required>{{ old('description') }}</textarea>
         </div>
-        <div class="mb-3">
-            <x-label for="image" value="Imagen" />
-            <x-input id="image" class="block mt-1 w-full" type="file" name="image" :value="old('image')" required
-                autocomplete="image" />
+        <div class="mt-2">
+            <x-label for="reasons" value="Razones" />
+            <textarea name="reasons" id="reasons" cols="30" rows="2"
+                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm block mt-1 w-full"
+                required>{{ old('reasons') }}</textarea>
+        </div>
+        <div class="mt-2">
+            <x-label for="goals" value="Objetivos" />
+            <textarea name="goals" id="goals" cols="30" rows="2"
+                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm block mt-1 w-full"
+                required>{{ old('goals') }}</textarea>
+        </div>
+        <div class="mt-2">
+            <x-label for="indicators" value="Indicadores" />
+            <textarea name="indicators" id="indicators" cols="30" rows="2"
+                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm block mt-1 w-full"
+                required>{{ old('indicators') }}</textarea>
         </div>
         <div class="flex items-center justify-end mt-4">
-            <x-button class="ms-4">Crear actividad</x-button>
+            <x-button class="ms-4">Asignar actividad</x-button>
         </div>
     </form>
 </x-crud-layout>

@@ -34,7 +34,13 @@ class PatientActivityController extends Controller
      */
     public function store(StorePatientActivityRequest $request)
     {
-        //
+        $user_id = auth()->user()->id;
+        $patient_id = request()->get('patient_id');
+        $validated = $request->validated();
+        $validated['user_id'] = $user_id;
+        $validated['patient_id'] = $patient_id;
+        PatientActivity::create($validated);
+        return redirect()->route('patient-activities.index', ['patient_id' => $patient_id]);
     }
 
     /**
@@ -42,7 +48,7 @@ class PatientActivityController extends Controller
      */
     public function show(PatientActivity $patientActivity)
     {
-        //
+        return view('patient-activities.show', compact('patientActivity'));
     }
 
     /**
@@ -50,7 +56,10 @@ class PatientActivityController extends Controller
      */
     public function edit(PatientActivity $patientActivity)
     {
-        //
+        $patient = $patientActivity->patient;
+        $patient_full_name = $patient->apellidos . ', ' . $patient->nombres;
+        $activities = Activity::all();
+        return view('patient-activities.edit', compact('patientActivity', 'activities', 'patient_full_name'));
     }
 
     /**
@@ -58,7 +67,10 @@ class PatientActivityController extends Controller
      */
     public function update(UpdatePatientActivityRequest $request, PatientActivity $patientActivity)
     {
-        //
+        $patient_id = $patientActivity->patient_id;
+        $validated = $request->validated();
+        $patientActivity->update($validated);
+        return redirect()->route('patient-activities.index', ['patient_id' => $patient_id]);
     }
 
     /**
@@ -66,6 +78,7 @@ class PatientActivityController extends Controller
      */
     public function destroy(PatientActivity $patientActivity)
     {
-        //
+        $patientActivity->delete();
+        return redirect()->route('patient-activities.index', ['patient_id' => $patientActivity->patient_id]);
     }
 }

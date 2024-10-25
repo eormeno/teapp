@@ -50,15 +50,15 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
-                        @foreach ($patientActivities as $key => $activity)
+                        @foreach ($patientActivities as $key => $patient_activity)
                             <tr class="{{ $key % 2 === 0 ? 'bg-gray-100' : 'bg-white' }} hover:bg-gray-200">
                                 <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ $activity->activity->name }}</td>
+                                    {{ $patient_activity->activity->name }}</td>
                                 <td class="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
-                                    {{ Str::limit($activity->activity->description, 30) }}</td>
+                                    {{ Str::limit($patient_activity->activity->description, 30) }}</td>
                                 <td class="px-4 py-2 whitespace-nowrap text-sm text-gray-500">
                                     <div class="flex items-center space-x-2">
-                                        <a href="{{ route('patient-activities.show', $activity) }}"
+                                        <a href="{{ route('patient-activities.show', $patient_activity) }}"
                                             class="text-indigo-600 hover:text-indigo-900">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -68,7 +68,7 @@
                                                     d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                             </svg>
                                         </a>
-                                        <a href="{{ route('patient-activities.edit', $activity) }}"
+                                        <a href="{{ route('patient-activities.edit', $patient_activity) }}"
                                             class="text-indigo-600 hover:text-indigo-900">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                 stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -76,7 +76,7 @@
                                                     d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                             </svg>
                                         </a>
-                                        <form action="{{ route('patient-activities.destroy', $activity) }}"
+                                        <form action="{{ route('patient-activities.destroy', $patient_activity) }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

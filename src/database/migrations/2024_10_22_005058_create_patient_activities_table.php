@@ -17,8 +17,7 @@ return new class extends Migration
             $table->foreignId('patient_id')->constrained();
             $table->foreignId('activity_id')->constrained();
             $table->boolean('active')->default(false);
-            $table->date('date');
-            $table->integer('repetitions')->nullable();
+            $table->text('description')->nullable();
             $table->text('reasons')->nullable();
             $table->text('goals')->nullable();
             $table->text('indicators')->nullable();
