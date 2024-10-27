@@ -1,16 +1,24 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Laravel\Jetstream\Http\Livewire\UpdatePasswordForm;
 use Livewire\Livewire;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
+use Laravel\Jetstream\Http\Livewire\UpdatePasswordForm;
 
 test('password can be updated', function () {
-    $this->actingAs($user = User::factory()->create());
+    $PANEL_PERMISSION = 'see-panel';
+    Permission::create(['name' => $PANEL_PERMISSION]);
+    $registered_role = Role::create(['name' => 'registered']);
+    $registered_role->givePermissionTo($PANEL_PERMISSION);
+    $env_fake_users_password = env('FAKE_USERS_PASSWORD');
+
+    $this->actingAs($user = User::factory()->create()->assignRole('registered'));
 
     Livewire::test(UpdatePasswordForm::class)
         ->set('state', [
-            'current_password' => 'password',
+            'current_password' => $env_fake_users_password,
             'password' => 'new-password',
             'password_confirmation' => 'new-password',
         ])
@@ -20,7 +28,12 @@ test('password can be updated', function () {
 });
 
 test('current password must be correct', function () {
-    $this->actingAs($user = User::factory()->create());
+    $PANEL_PERMISSION = 'see-panel';
+    Permission::create(['name' => $PANEL_PERMISSION]);
+    $registered_role = Role::create(['name' => 'registered']);
+    $registered_role->givePermissionTo($PANEL_PERMISSION);
+    $this->actingAs($user = User::factory()->create()->assignRole('registered'));
+    $env_fake_users_password = env('FAKE_USERS_PASSWORD');
 
     Livewire::test(UpdatePasswordForm::class)
         ->set('state', [
@@ -31,20 +44,25 @@ test('current password must be correct', function () {
         ->call('updatePassword')
         ->assertHasErrors(['current_password']);
 
-    expect(Hash::check('password', $user->fresh()->password))->toBeTrue();
+    expect(Hash::check($env_fake_users_password, $user->fresh()->password))->toBeTrue();
 });
 
 test('new passwords must match', function () {
-    $this->actingAs($user = User::factory()->create());
+    $PANEL_PERMISSION = 'see-panel';
+    Permission::create(['name' => $PANEL_PERMISSION]);
+    $registered_role = Role::create(['name' => 'registered']);
+    $registered_role->givePermissionTo($PANEL_PERMISSION);
+    $this->actingAs($user = User::factory()->create()->assignRole('registered'));
+    $env_fake_users_password = env('FAKE_USERS_PASSWORD');
 
     Livewire::test(UpdatePasswordForm::class)
         ->set('state', [
-            'current_password' => 'password',
+            'current_password' => $env_fake_users_password,
             'password' => 'new-password',
             'password_confirmation' => 'wrong-password',
         ])
         ->call('updatePassword')
         ->assertHasErrors(['password']);
 
-    expect(Hash::check('password', $user->fresh()->password))->toBeTrue();
+    expect(Hash::check($env_fake_users_password, $user->fresh()->password))->toBeTrue();
 });

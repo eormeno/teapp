@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 test('login screen can be rendered', function () {
     $response = $this->get('/login');
@@ -9,11 +12,14 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    Role::create(['name' => 'root']);
+
+    $user = User::factory()->rootUser()->create()->assignRole('root');
+    $env_root_password = env('ADMIN_PASSWORD');
 
     $response = $this->post('/login', [
         'email' => $user->email,
-        'password' => 'password',
+        'password' => $env_root_password,
     ]);
 
     $this->assertAuthenticated();
