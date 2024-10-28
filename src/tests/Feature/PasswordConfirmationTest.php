@@ -1,25 +1,24 @@
 <?php
 
 use App\Models\User;
+use Tests\TestHelpers;
 use Laravel\Jetstream\Features;
-use Spatie\Permission\Models\Role;
 
 test('confirm password screen can be rendered', function () {
     $user = Features::hasTeamFeatures()
                     ? User::factory()->withPersonalTeam()->create()
-                    : User::factory()->create();
+                    : TestHelpers::registeredUser();
 
     $response = $this->actingAs($user)->get('/user/confirm-password');
     $response->assertStatus(200);
 });
 
 test('password can be confirmed', function () {
-    Role::create(['name' => 'root']);
-    $user = User::factory()->rootUser()->create()->assignRole('root');
-    $env_root_password = env('ADMIN_PASSWORD');
+    $root_user = TestHelpers::rootUser();
+    $root_pass = TestHelpers::rootDefaultPassword();
 
-    $response = $this->actingAs($user)->post('/user/confirm-password', [
-        'password' => $env_root_password,
+    $response = $this->actingAs($root_user)->post('/user/confirm-password', [
+        'password' => $root_pass,
     ]);
 
     $response->assertRedirect();
@@ -27,7 +26,7 @@ test('password can be confirmed', function () {
 });
 
 test('password is not confirmed with invalid password', function () {
-    $user = User::factory()->create();
+    $user = TestHelpers::registeredUser();
 
     $response = $this->actingAs($user)->post('/user/confirm-password', [
         'password' => 'wrong-password',

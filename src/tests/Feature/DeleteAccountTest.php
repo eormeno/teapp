@@ -1,20 +1,16 @@
 <?php
 
-use App\Models\User;
 use Livewire\Livewire;
+use Tests\TestHelpers;
 use Laravel\Jetstream\Features;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\PermissionRegistrar;
 use Laravel\Jetstream\Http\Livewire\DeleteUserForm;
 
 test('user accounts can be deleted', function () {
-    Role::create(['name' => 'root']);
-    $this->actingAs($user = User::factory()->rootUser()->create()->assignRole('root'));
-    $env_root_password = env('ADMIN_PASSWORD');
+    $this->actingAs($user = TestHelpers::rootUser());
+    $root_password = TestHelpers::rootDefaultPassword();
 
     $component = Livewire::test(DeleteUserForm::class)
-        ->set('password', $env_root_password)
+        ->set('password', $root_password)
         ->call('deleteUser');
 
     expect($user->fresh())->toBeNull();
@@ -23,7 +19,7 @@ test('user accounts can be deleted', function () {
 }, 'Account deletion is not enabled.');
 
 test('correct password must be provided before account can be deleted', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = TestHelpers::rootUser());
 
     Livewire::test(DeleteUserForm::class)
         ->set('password', 'wrong-password')

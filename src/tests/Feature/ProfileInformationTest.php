@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\User;
-use Laravel\Jetstream\Http\Livewire\UpdateProfileInformationForm;
 use Livewire\Livewire;
+use Tests\TestHelpers;
+use Laravel\Jetstream\Http\Livewire\UpdateProfileInformationForm;
 
 test('current profile information is available', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = TestHelpers::registeredUser());
 
     $component = Livewire::test(UpdateProfileInformationForm::class);
 
@@ -14,7 +14,7 @@ test('current profile information is available', function () {
 });
 
 test('profile information can be updated', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = TestHelpers::registeredUser());
 
     Livewire::test(UpdateProfileInformationForm::class)
         ->set('state', ['name' => 'Test Name', 'email' => 'test@example.com'])

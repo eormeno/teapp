@@ -1,16 +1,17 @@
 <?php
 
 use App\Models\User;
+use Livewire\Livewire;
+use Tests\TestHelpers;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
 use Laravel\Jetstream\Http\Livewire\ApiTokenManager;
-use Livewire\Livewire;
 
 test('api token permissions can be updated', function () {
     if (Features::hasTeamFeatures()) {
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
     } else {
-        $this->actingAs($user = User::factory()->create());
+        $this->actingAs($user = TestHelpers::rootUser());
     }
 
     $token = $user->tokens()->create([
@@ -21,12 +22,14 @@ test('api token permissions can be updated', function () {
 
     Livewire::test(ApiTokenManager::class)
         ->set(['managingPermissionsFor' => $token])
-        ->set(['updateApiTokenForm' => [
-            'permissions' => [
-                'delete',
-                'missing-permission',
-            ],
-        ]])
+        ->set([
+            'updateApiTokenForm' => [
+                'permissions' => [
+                    'delete',
+                    'missing-permission',
+                ],
+            ]
+        ])
         ->call('updateApiToken');
 
     expect($user->fresh()->tokens->first())
@@ -34,5 +37,5 @@ test('api token permissions can be updated', function () {
         ->can('read')->toBeFalse()
         ->can('missing-permission')->toBeFalse();
 })->skip(function () {
-    return ! Features::hasApiFeatures();
+    return !Features::hasApiFeatures();
 }, 'API support is not enabled.');

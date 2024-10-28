@@ -1,22 +1,12 @@
 <?php
 
-use App\Models\User;
+use Tests\TestHelpers;
 use App\Models\Patient;
 use App\Models\Activity;
 use App\Models\PatientActivity;
-use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\PermissionRegistrar;
-
-function rootUser()
-{
-    Role::create(['name' => 'root']);
-    $user = User::factory()->rootUser()->create()->assignRole('root');
-    return $user;
-}
 
 test('El EndPoint patient-activities/{codigo} retorna un json válido', function () {
-    $user = rootUser();
+    $user = TestHelpers::rootUser();
     $patient = Patient::factory()->create();
     $activity = Activity::factory()->create();
     PatientActivity::factory()->create([

@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\User;
-use Laravel\Jetstream\Http\Livewire\LogoutOtherBrowserSessionsForm;
 use Livewire\Livewire;
+use Tests\TestHelpers;
+use Laravel\Jetstream\Http\Livewire\LogoutOtherBrowserSessionsForm;
 
 test('other browser sessions can be logged out', function () {
-    $this->actingAs($user = User::factory()->create());
+    $this->actingAs($user = TestHelpers::registeredUser());
 
     Livewire::test(LogoutOtherBrowserSessionsForm::class)
         ->set('password', 'password')
