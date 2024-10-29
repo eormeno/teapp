@@ -2,3 +2,5 @@ mysql
 .DS_Store
 .idea
 processes.txt
+# ignore all files in the 'godot' directory
+godot/*
